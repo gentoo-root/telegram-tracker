@@ -32,10 +32,18 @@ while True:
             online = False
             print(f'User went offline: {utc2localtime(contact.status.was_online).strftime(DATETIME_FORMAT)}')
         elif last_offline != contact.status.was_online:
-            print(f'User went online and back offline: {utc2localtime(contact.status.was_online).strftime(DATETIME_FORMAT)}')
+            if last_offline is not None:
+                print(f'User went online and back offline: {utc2localtime(contact.status.was_online).strftime(DATETIME_FORMAT)}')
+            else:
+                print(f'User went offline: {utc2localtime(contact.status.was_online).strftime(DATETIME_FORMAT)}')
         last_offline = contact.status.was_online
-    else:
+    elif isinstance(contact.status, UserStatusOnline):
         if online != True:
             online = True
             print(f'User went online: {datetime.now().strftime(DATETIME_FORMAT)}')
+    else:
+        if online != False:
+            online = False
+            print(f'User went offline: around {datetime.now().strftime(DATETIME_FORMAT)}')
+        last_offline = None
     sleep(15)
