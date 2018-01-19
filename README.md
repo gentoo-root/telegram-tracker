@@ -23,6 +23,11 @@ Telethon can be installed with pip:
 
 ...or possibly from your distribution repositories.
 
+Then you need to register your Telegram application on the [Telegram website](https://my.telegram.org/apps). After you have acquired `api_id` and `api_hash`, put them into `settings/keys.py` like this:
+
+    API_ID = 123456
+    API_HASH = '1234567890abcdef1234567890abcdef'
+
 To begin tracking someone, start the script like this (the current working directory needs to be this repository root):
 
     $ python3 -m track '+380991234567'
