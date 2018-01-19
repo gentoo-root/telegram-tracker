@@ -39,6 +39,23 @@ How it works
 
 The script polls the user status every 15 seconds. If the status switches to online, it can't determine the exact time of the transition and shows the time when it found out this information. On the other hand, offline transitions are measured exactly as the Telegram server returns the exact time of going offline. The script may not detect short (less than 15 seconds) transitions to offline and back online. It can, however, detect that the user was online for short time (last online time returned by the server changes).
 
+Frequently asked questions
+--------------------------
+
+### Do I need to login into my account?
+
+Yes, you need to. Telethon library handles it automatically and asks you for your phone number at the first run and for the confirmation code and password if required.
+
+### Can I track any Telegram user with this software?
+
+Acquiring someone's status is done on your behalf, so if you don't have the access to this information or have limited access, the script may either show inexact information based on polling (that means, the timestamps would be inexact and some transitions may be missed) or not work at all.
+
+The best results can be achieved if you can see the user's last online time in the Telegram application.
+
+### Does it change my own online status?
+
+No, you stay offline unless you are using Telegram from your device at that moment. Running this script doesn't make you appear online in Telegram and doesn't change your last online time.
+
 License
 -------
 
