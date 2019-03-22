@@ -28,7 +28,6 @@ from time import mktime, sleep
 
 import telethon.sync
 
-
 DATETIME_FORMAT = '%Y-%m-%d @ %H:%M:%S'
 
 
@@ -51,6 +50,8 @@ dataFile = open('shuTimes.txt', 'a+')
 
 online = None
 last_offline = None
+
+printName=True
 while True:
     try:
         dataFile = open('trackerLogs.txt', 'a+', encoding = 'utf-8')
@@ -60,6 +61,10 @@ while True:
             contact = client.get_me()
         else:
             contact = client.get_entity(contact_id)
+            user = contact.first_name+' '+contact.last_name
+        if printName==True:
+            print(user, file=dataFile)
+            print(user)
 
         if isinstance(contact.status, UserStatusOffline):
             if online != False:
@@ -86,5 +91,6 @@ while True:
                 print(f'~{datetime.now().strftime(DATETIME_FORMAT)}: User went offline.')
             last_offline = None
         sleep(15)
+        printName=False
     finally:
         dataFile.close()
