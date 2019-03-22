@@ -90,5 +90,6 @@ while True:
             last_offline = None
         sleep(15)
         printName = False
+        dataFile.flush()
     finally:
         dataFile.close()
