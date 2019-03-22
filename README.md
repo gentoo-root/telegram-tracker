@@ -11,6 +11,7 @@ Example output:
     =2018-01-19 @ 01:46:39: User went offline after being online for short time.
 
 = means that the time is exact as returned by the Telegram server, and ~ means that the time is measured locally and can be inexact.
+By default the times are saved to a file called `trackerLogs.txt` along with being printed to `STDOUT`.
 
 How to run
 ----------

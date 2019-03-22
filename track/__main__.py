@@ -46,33 +46,45 @@ contact_id = argv[1]
 client = TelegramClient('tracker', API_ID, API_HASH)
 client.start()
 
+# File IO
+dataFile = open('shuTimes.txt', 'a+')
+
 online = None
 last_offline = None
 while True:
-    if contact_id in ['me', 'self']:
+    try:
+        dataFile = open('trackerLogs.txt', 'a+', encoding = 'utf-8')
+        if contact_id in ['me', 'self']:
         # Workaround for the regression in Telethon that breaks get_entity('me'):
         # https://github.com/LonamiWebs/Telethon/issues/1024
-        contact = client.get_me()
-    else:
-        contact = client.get_entity(contact_id)
+            contact = client.get_me()
+        else:
+            contact = client.get_entity(contact_id)
 
-    if isinstance(contact.status, UserStatusOffline):
-        if online != False:
-            online = False
-            print(f'={utc2localtime(contact.status.was_online).strftime(DATETIME_FORMAT)}: User went offline.')
-        elif last_offline != contact.status.was_online:
-            if last_offline is not None:
-                print(f'={utc2localtime(contact.status.was_online).strftime(DATETIME_FORMAT)}: User went offline after being online for short time.')
-            else:
+        if isinstance(contact.status, UserStatusOffline):
+            if online != False:
+                online = False
+                print(f'={utc2localtime(contact.status.was_online).strftime(DATETIME_FORMAT)}: User went offline.', file=dataFile)
                 print(f'={utc2localtime(contact.status.was_online).strftime(DATETIME_FORMAT)}: User went offline.')
-        last_offline = contact.status.was_online
-    elif isinstance(contact.status, UserStatusOnline):
-        if online != True:
-            online = True
-            print(f'~{datetime.now().strftime(DATETIME_FORMAT)}: User went online.')
-    else:
-        if online != False:
-            online = False
-            print(f'~{datetime.now().strftime(DATETIME_FORMAT)}: User went offline.')
-        last_offline = None
-    sleep(15)
+            elif last_offline != contact.status.was_online:
+                if last_offline is not None:
+                    print(f'={utc2localtime(contact.status.was_online).strftime(DATETIME_FORMAT)}: User went offline after being online for short time.', file=dataFile)
+                    print(f'={utc2localtime(contact.status.was_online).strftime(DATETIME_FORMAT)}: User went offline after being online for short time.')
+                else:
+                    print(f'={utc2localtime(contact.status.was_online).strftime(DATETIME_FORMAT)}: User went offline.', file=dataFile)
+                    print(f'={utc2localtime(contact.status.was_online).strftime(DATETIME_FORMAT)}: User went offline.')
+            last_offline = contact.status.was_online
+        elif isinstance(contact.status, UserStatusOnline):
+            if online != True:
+                online = True
+                print(f'~{datetime.now().strftime(DATETIME_FORMAT)}: User went online.', file=dataFile)
+                print(f'~{datetime.now().strftime(DATETIME_FORMAT)}: User went online.')
+        else:
+            if online != False:
+                online = False
+                print(f'~{datetime.now().strftime(DATETIME_FORMAT)}: User went offline.', file=dataFile)
+                print(f'~{datetime.now().strftime(DATETIME_FORMAT)}: User went offline.')
+            last_offline = None
+        sleep(15)
+    finally:
+        dataFile.close()

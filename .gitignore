@@ -1,3 +1,4 @@
 /settings/keys.py
 /tracker.session
 __pycache__/
+trackerLogs.txt
